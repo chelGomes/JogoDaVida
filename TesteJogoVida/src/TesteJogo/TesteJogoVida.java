@@ -123,4 +123,39 @@ public class TesteJogoVida {
         String saida = saidaConsole.toString();
         assertTrue(saida.contains("O")); // Verifica se o caractere 'O' foi impresso
     }
+    
+    
+    /// melhorias no teste de cobertura /////
+    
+    @Test
+    public void testCelulasNasBordas() {
+        // Configuração inicial: define células vivas nas bordas da grade
+        jogo.setCelula(0, 0, 1); // Célula viva na posição (0, 0)
+        jogo.setCelula(0, 1, 1); // Célula viva na posição (0, 1)
+        jogo.setCelula(1, 0, 1); // Célula viva na posição (1, 0)
+
+        // Executa a próxima geração do Jogo da Vida
+        jogo.proximaGeracao();
+
+        // Verifica se a célula na posição (0, 0) continua viva após a evolução
+        // De acordo com as regras do Jogo da Vida, uma célula com 2 ou 3 vizinhos vivos continua viva
+        assertEquals(1, jogo.getCelula(0, 0));
+    }
+
+    @Test
+    public void testPadraoOscilador() {
+        // Configuração inicial: define um padrão oscilador (blinker) na vertical
+        jogo.setCelula(1, 2, 1); // Célula viva na posição (1, 2)
+        jogo.setCelula(2, 2, 1); // Célula viva na posição (2, 2)
+        jogo.setCelula(3, 2, 1); // Célula viva na posição (3, 2)
+
+        // Executa a próxima geração do Jogo da Vida
+        jogo.proximaGeracao();
+
+        // Verifica o estado das células após a evolução
+        // O padrão oscilador deve girar para a horizontal, então:
+        assertEquals(0, jogo.getCelula(1, 2)); // Célula (1, 2) deve morrer
+        assertEquals(1, jogo.getCelula(2, 2)); // Célula (2, 2) deve continuar viva
+        assertEquals(0, jogo.getCelula(3, 2)); // Célula (3, 2) deve morrer
+    }
 }
